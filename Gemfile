@@ -1,61 +1,63 @@
-# pixelcanvas/Gemfile
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Rails core
-gem 'rails', '~> 7.1.0'
-gem 'pg', '>= 1.3'                   # PostgreSQL database
-gem 'puma', '~> 6.0'                 # Web server for Heroku
-gem 'sass-rails', '>= 6'             # CSS preprocessor
-gem 'turbo-rails'                    # Hotwire Turbo for fast front-end
-gem 'stimulus-rails'                 # Stimulus JS for interactions
-gem 'jbuilder', '~> 2.11'            # JSON views
-gem 'webpacker', '~> 5.0'            # JS bundling
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 8.0.2", ">= 8.0.2.1"
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", ">= 2.1"
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
 
-# Authentication & OAuth
-gem 'devise', '~> 4.9'               # User authentication
-gem 'omniauth-google-oauth2', '~> 2.2' # Google OAuth login
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
 
-# Payments
-gem 'stripe', '~> 6.0'               # Stripe payment processing
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Real-time features
-gem 'redis', '~> 6.2'                # Redis for ActionCable & caching
-gem 'actioncable', '~> 7.1'          # WebSocket server for live canvas
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
 
-# Image uploads / storage
-gem 'image_processing', '~> 1.14'   # For ActiveStorage image processing
-gem 'mini_magick', '~> 4.12'         # ImageMagick wrapper
-gem 'aws-sdk-s3', '~> 1.115'         # S3 storage support
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
 
-# Background jobs
-gem 'sidekiq', '~> 7.0'              # Background job processing
-gem 'sidekiq-cron', '~> 1.2'         # Cron scheduling for Sidekiq
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
 
-# Authorization
-gem 'cancancan', '~> 3.3'            # User permissions
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
 
-# Pagination and helpers
-gem 'kaminari', '~> 1.3'             # Pagination for leaderboards
-gem 'friendly_id', '~> 5.4'          # Slugs for user profiles
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
 
-# Utilities
-gem 'dotenv-rails', groups: [:development, :test] # Environment variables
-gem 'faker', '~> 3.1', groups: [:development, :test] # Fake data
-gem 'pry-rails', groups: [:development, :test]   # Debugging
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
-# Development & Testing
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
+
+  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop-rails-omakase", require: false
+end
+
 group :development do
-  gem 'web-console', '>= 4.2'
-  gem 'listen', '~> 3.7'
-  gem 'spring'
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
 end
 
 group :test do
-  gem 'rspec-rails', '~> 6.0'
-  gem 'capybara', '>= 3.36'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
 end
-
-# Heroku deployment
-gem 'rails_12factor', group: :production

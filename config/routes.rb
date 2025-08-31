@@ -1,86 +1,14 @@
-# config/routes.rb
-
 Rails.application.routes.draw do
-  # -----------------------
-  # Root / Home
-  # -----------------------
-  root to: "home#index"
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # -----------------------
-  # Authentication (Google OAuth)
-  # -----------------------
-  get "/auth/:provider/callback", to: "sessions#create"
-  get "/auth/failure", to: redirect("/")
-  delete "/logout", to: "sessions#destroy", as: :logout
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
 
-  # -----------------------
-  # Pixel drawing
-  # -----------------------
-  resources :pixels, only: [:create, :index, :update, :destroy] do
-    collection do
-      get "history"        # For historical pixel queries
-      get "user_stats/:user_id", to: "pixels#user_stats", as: :user_stats
-    end
-  end
+  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
+  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # -----------------------
-  # Leaderboards
-  # -----------------------
-  resources :leaderboards, only: [:index] do
-    collection do
-      get "daily"
-      get "monthly"
-      get "yearly"
-    end
-  end
-
-  # -----------------------
-  # User profiles
-  # -----------------------
-  resources :profiles, only: [:show, :edit, :update] do
-    member do
-      get "pixels_drawn"
-      get "colors_owned"
-    end
-  end
-
-  # -----------------------
-  # Chat system
-  # -----------------------
-  resources :chat_messages, only: [:create, :index]
-
-  # -----------------------
-  # Groups / guilds
-  # -----------------------
-  resources :groups do
-    resources :group_memberships, only: [:create, :destroy]
-  end
-
-  # -----------------------
-  # Stripe webhooks
-  # -----------------------
-  post "/stripe/webhook", to: "stripe_webhook#create"
-
-  # -----------------------
-  # ActionCable (WebSocket)
-  # -----------------------
-  mount ActionCable.server => "/cable"
-
-  # -----------------------
-  # API / JSON namespace (future-ready)
-  # -----------------------
-  namespace :api, defaults: { format: :json } do
-    namespace :v1 do
-      resources :pixels, only: [:create, :index]
-      resources :leaderboards, only: [:index]
-      resources :profiles, only: [:show, :update]
-      resources :chat_messages, only: [:create, :index]
-      resources :groups, only: [:index, :show]
-    end
-  end
-
-  # -----------------------
-  # Fallback route
-  # -----------------------
-  get "*path", to: redirect("/")
+  # Defines the root path route ("/")
+  # root "posts#index"
 end
