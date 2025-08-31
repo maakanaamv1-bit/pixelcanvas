@@ -5,6 +5,7 @@ modules = ["ruby-3.2"]
 
 [nix]
 channel = "stable-24_05"
+packages = ["zammad", "tree", "rbenv"]
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix"]
