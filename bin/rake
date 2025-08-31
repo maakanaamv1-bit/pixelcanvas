@@ -1,4 +1,17 @@
-#!/usr/bin/env ruby.exe
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
+require APP_PATH
+
 require "rake"
-Rake.application.run
+
+# Ensure RAILS_ENV defaults to production on Heroku
+ENV["RAILS_ENV"] ||= "production"
+
+# Load Rake tasks
+Rails.application.load_tasks
+
+# Run Rake with passed arguments
+exit Rake.application.run
