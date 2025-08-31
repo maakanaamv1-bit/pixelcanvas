@@ -113,4 +113,4 @@ DEPENDENCIES
   webpacker (~> 5.0)
 
 BUNDLED WITH
-   3.5.8
+   2.6.15
