@@ -1,0 +1,27 @@
+# config/cable.yml
+
+# Action Cable configuration for PixelCanvas
+# Supports multiple environments (development, test, production)
+# Includes Redis for production scaling and secure WebSocket setup
+
+development:
+  adapter: async
+  # Allowed request origins for dev environment
+  allowed_request_origins:
+    - http://localhost:3000
+    - http://127.0.0.1:3000
+
+test:
+  adapter: test
+
+production:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: pixelcanvas_production
+  # Optional: configure SSL verification for secure WebSocket connections
+  ssl_params:
+    verify_mode: OpenSSL::SSL::VERIFY_PEER
+
+  # Allowed request origins for production environment
+  allowed_request_origins:
+    - <%= ENV.fetch("APP_URL") { "https://yourdomain.com" } %>

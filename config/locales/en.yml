@@ -1,0 +1,109 @@
+# config/locales/en.yml
+en:
+  app_name: "PixelCanvas"
+  
+  # General
+  hello: "Hello"
+  welcome: "Welcome to %{app_name}!"
+  sign_in: "Sign In"
+  sign_out: "Sign Out"
+  sign_up: "Sign Up"
+  loading: "Loading..."
+  error: "Error"
+  success: "Success"
+
+  # Users & Profiles
+  profile:
+    title: "Profile"
+    bio: "Bio"
+    edit_profile: "Edit Profile"
+    update_success: "Profile updated successfully!"
+    update_error: "Failed to update profile."
+    unique_code: "Your Unique Code"
+    pixels_drawn_all_time: "Pixels drawn (all time)"
+    colors_owned: "Colors Owned"
+    daily_pixels: "Pixels drawn today"
+    monthly_pixels: "Pixels drawn this month"
+    yearly_pixels: "Pixels drawn this year"
+
+  # Authentication
+  auth:
+    google_login: "Sign in with Google"
+    already_signed_in: "You are already signed in."
+    not_signed_in: "You must sign in first."
+    invalid_credentials: "Invalid credentials."
+    session_expired: "Session expired. Please sign in again."
+
+  # Leaderboards
+  leaderboard:
+    title: "Leaderboard"
+    rank: "Rank"
+    user: "User"
+    pixels_today: "Pixels Today"
+    pixels_month: "Pixels This Month"
+    pixels_year: "Pixels This Year"
+    pixels_all_time: "Pixels All Time"
+    loading: "Loading leaderboard..."
+
+  # Canvas
+  canvas:
+    title: "Pixel Canvas"
+    draw_pixel: "Draw Pixel"
+    color_picker: "Color Picker"
+    undo: "Undo"
+    redo: "Redo"
+    clear_canvas: "Clear Canvas"
+    pixel_limit_reached: "You have reached your pixel limit."
+    pixel_fill_time: "Each pixel takes %{seconds} seconds to fill."
+    purchase_more_pixels: "Purchase more pixels using play points."
+    available_colors: "Available Colors"
+
+  # Chat
+  chat:
+    global_title: "Global Chat"
+    group_title: "Group Chat"
+    message_placeholder: "Type a message..."
+    send: "Send"
+    join_group: "Join Group"
+    leave_group: "Leave Group"
+    create_group: "Create Group"
+    group_name: "Group Name"
+    members: "Members"
+    no_messages: "No messages yet."
+    private_message: "Private Message"
+
+  # Stripe / Purchases
+  stripe:
+    purchase_success: "Purchase successful!"
+    purchase_failed: "Purchase failed. Please try again."
+    unlock_colors: "Unlock %{count} colors for $%{price}"
+    unlock_all_colors: "Unlock all colors for $%{price} per month"
+    subscription_active: "Subscription active"
+    subscription_inactive: "Subscription inactive"
+    webhook_error: "Stripe webhook error"
+
+  # Errors & Validation
+  errors:
+    required_field: "%{field} is required."
+    invalid_email: "Invalid email address."
+    password_too_short: "Password must be at least %{count} characters."
+    not_found: "%{item} not found."
+    unauthorized: "You are not authorized to perform this action."
+
+  # Admin / System
+  admin:
+    dashboard: "Admin Dashboard"
+    users: "Users"
+    pixels: "Pixels"
+    purchases: "Purchases"
+    manage: "Manage"
+    logs: "System Logs"
+
+  # Misc
+  actions:
+    save: "Save"
+    cancel: "Cancel"
+    delete: "Delete"
+    confirm_delete: "Are you sure you want to delete this?"
+    yes: "Yes"
+    no: "No"

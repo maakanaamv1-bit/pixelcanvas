@@ -1,0 +1,44 @@
+# config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  reconnect: true
+  variables:
+    statement_timeout: 5000
+    idle_in_transaction_session_timeout: 20000
+  username: <%= ENV['DB_USERNAME'] || 'postgres' %>
+  password: <%= ENV['DB_PASSWORD'] || 'password' %>
+  host: <%= ENV['DB_HOST'] || 'localhost' %>
+  port: <%= ENV['DB_PORT'] || 5432 %>
+  sslmode: <%= ENV['DB_SSLMODE'] || 'prefer' %>
+
+development:
+  <<: *default
+  database: pixelcanvas_development
+  min_messages: warning
+  encoding: unicode
+
+test:
+  <<: *default
+  database: pixelcanvas_test
+  min_messages: warning
+  encoding: unicode
+
+production:
+  <<: *default
+  database: <%= ENV['DATABASE_NAME'] || 'pixelcanvas_production' %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] || 5432 %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+  reconnect: true
+  sslmode: require
+  checkout_timeout: 10
+  statement_timeout: 10000
+  variables:
+    lock_timeout: 5000
+    idle_in_transaction_session_timeout: 20000

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelCanvas - Service Unavailable</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e2a3f, #2c3b56);
+      font-family: 'Press Start 2P', cursive;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      border: 4px solid #00ffcc;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,255,204,0.5);
+    }
+
+    h1 { font-size: 48px; color: #00ffcc; margin-bottom: 16px; }
+    p { font-size: 16px; color: #ffffff; margin-bottom: 24px; }
+
+    .pixel-art span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin: 1px;
+      background-color: #00ffcc;
+      animation: blink 1.5s infinite alternate;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .btn-home {
+      display: inline-block;
+      padding: 12px 24px;
+      color: #1e2a3f;
+      background-color: #00ffcc;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background-color: #ffffff;
+      color: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>503</h1>
+    <p>Service temporarily unavailable. Please try again later.</p>
+    <div class="pixel-art">
+      <span></span><span></span><span></span>
+      <br>
+      <span></span>&nbsp;&nbsp;<span></span>
+      <br>
+      <span></span><span></span><span></span>
+    </div>
+    <a href="/" class="btn-home">Go Back Home</a>
+  </div>
+</body>
+</html>

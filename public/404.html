@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelCanvas - Page Not Found</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e1e2f, #282c34);
+      font-family: 'Press Start 2P', cursive;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      border: 4px solid #00ffff;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.5);
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #00ffff;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #ffffff;
+      margin-bottom: 24px;
+    }
+
+    .pixel-art {
+      font-size: 12px;
+      line-height: 1;
+      margin: 16px 0;
+    }
+
+    .btn-home {
+      display: inline-block;
+      padding: 12px 24px;
+      color: #1e1e2f;
+      background-color: #00ffff;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background-color: #ffffff;
+      color: #00ffff;
+      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+
+    /* Pixel art 404 effect */
+    .pixel-art span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin: 1px;
+      background-color: #00ffff;
+      animation: blink 1.5s infinite alternate;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <p>Oops! The page you are looking for does not exist.</p>
+    
+    <div class="pixel-art">
+      <!-- Simple pixel art effect for fun -->
+      <span></span><span></span><span></span><span></span><span></span>
+      <br>
+      <span></span>&nbsp;&nbsp;&nbsp;&nbsp;<span></span>
+      <br>
+      <span></span>&nbsp;&nbsp;&nbsp;&nbsp;<span></span>
+      <br>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <a href="/" class="btn-home">Go Back Home</a>
+  </div>
+</body>
+</html>

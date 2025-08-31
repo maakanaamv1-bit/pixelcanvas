@@ -1,0 +1,152 @@
+<!-- app/views/home/index.html.erb -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PixelCanvas Live</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application", defer: true %>
+
+  <style>
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: #f0f0f0; margin: 0; padding: 0; }
+    #canvas-container { position: relative; width: 100%; max-width: 1200px; margin: 20px auto; }
+    canvas { border: 2px solid #333; display: block; margin: auto; cursor: crosshair; }
+    #tools { display: flex; justify-content: center; margin: 10px; gap: 10px; flex-wrap: wrap; }
+    #color-palette { display: flex; gap: 5px; flex-wrap: wrap; }
+    .color-box { width: 24px; height: 24px; cursor: pointer; border: 2px solid #444; border-radius: 3px; }
+    .color-box.active { border: 2px solid #fff; }
+    #leaderboard { max-width: 400px; margin: 20px auto; }
+    #leaderboard table { width: 100%; border-collapse: collapse; }
+    #leaderboard th, #leaderboard td { padding: 5px; border-bottom: 1px solid #555; text-align: left; }
+    #chat { max-width: 400px; margin: 20px auto; background: #111; padding: 10px; border-radius: 5px; }
+    #chat-messages { max-height: 300px; overflow-y: scroll; margin-bottom: 10px; }
+    #chat input { width: 100%; padding: 5px; border-radius: 3px; border: none; }
+    #profile { max-width: 400px; margin: 20px auto; background: #111; padding: 10px; border-radius: 5px; }
+    #profile h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="text-align:center;">PixelCanvas Live</h1>
+  </header>
+
+  <div id="canvas-container">
+    <canvas id="pixelCanvas" width="1000" height="1000"></canvas>
+  </div>
+
+  <div id="tools">
+    <div id="color-palette">
+      <% current_user.colors_owned_list.each do |color| %>
+        <div class="color-box" data-color="<%= color %>" style="background:<%= color %>"></div>
+      <% end %>
+    </div>
+    <button id="undoBtn">Undo</button>
+    <button id="clearBtn">Clear</button>
+  </div>
+
+  <div id="leaderboard">
+    <h2>Leaderboard</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Pixels Drawn Today</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        <% User.top_drawers_today.limit(10).each_with_index do |user, index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= user.username %></td>
+            <td><%= user.leaderboard_rank(:today) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="chat">
+    <h3>Global Chat</h3>
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Type a message and press Enter" />
+  </div>
+
+  <div id="profile">
+    <h2>Profile</h2>
+    <p><strong>Username:</strong> <%= current_user.username %></p>
+    <p><strong>Unique Code:</strong> <%= current_user.unique_code %></p>
+    <p><strong>Total Pixels Drawn:</strong> <%= current_user.total_pixels_drawn %></p>
+    <p><strong>Bio:</strong> <%= current_user.bio %></p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const canvas = document.getElementById('pixelCanvas');
+      const ctx = canvas.getContext('2d');
+      const colorBoxes = document.querySelectorAll('.color-box');
+      let currentColor = colorBoxes[0]?.dataset.color || '#ff0000';
+      let isDrawing = false;
+
+      // Handle color selection
+      colorBoxes.forEach(box => {
+        box.addEventListener('click', () => {
+          colorBoxes.forEach(b => b.classList.remove('active'));
+          box.classList.add('active');
+          currentColor = box.dataset.color;
+        });
+      });
+
+      // Draw pixel
+      canvas.addEventListener('mousedown', e => { isDrawing = true; drawPixel(e); });
+      canvas.addEventListener('mouseup', () => isDrawing = false);
+      canvas.addEventListener('mousemove', drawPixel);
+
+      function drawPixel(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor((e.clientX - rect.left) / 10) * 10;
+        const y = Math.floor((e.clientY - rect.top) / 10) * 10;
+        ctx.fillStyle = currentColor;
+        ctx.fillRect(x, y, 10, 10);
+
+        // Broadcast pixel to server
+        if (window.App?.cable?.subscriptions) {
+          App.cable.subscriptions.subscriptions.forEach(sub => {
+            if(sub.identifier.includes('CanvasChannel')) {
+              sub.send({ x: x, y: y, color: currentColor });
+            }
+          });
+        }
+      }
+
+      // Undo & Clear
+      document.getElementById('undoBtn').addEventListener('click', () => {
+        // Placeholder for undo logic (could integrate server-side undo)
+        alert("Undo feature coming soon!");
+      });
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Optionally broadcast clear event to others
+      });
+
+      // Chat
+      const chatInput = document.getElementById('chat-input');
+      const chatMessages = document.getElementById('chat-messages');
+      chatInput.addEventListener('keypress', e => {
+        if(e.key === 'Enter' && chatInput.value.trim() !== '') {
+          App.cable.subscriptions.subscriptions.forEach(sub => {
+            if(sub.identifier.includes('GlobalChatChannel')) {
+              sub.send({ content: chatInput.value });
+            }
+          });
+          chatInput.value = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

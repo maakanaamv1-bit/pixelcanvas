@@ -1,0 +1,46 @@
+# config/storage.yml
+
+# -----------------------
+# Local disk storage (development & test)
+# -----------------------
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# -----------------------
+# Amazon S3 (production)
+# -----------------------
+amazon:
+  service: S3
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  bucket: <%= ENV['AWS_BUCKET'] %>
+  upload:
+    acl: "public-read"
+    cache_control: "max-age=31536000"
+
+# -----------------------
+# Google Cloud Storage (future-ready)
+# -----------------------
+google:
+  service: GCS
+  project: <%= ENV['GCS_PROJECT'] %>
+  credentials: <%= ENV['GCS_CREDENTIALS_JSON'] %>
+  bucket: <%= ENV['GCS_BUCKET'] %>
+
+# -----------------------
+# Azure Blob Storage (future-ready)
+# -----------------------
+azure:
+  service: AzureStorage
+  storage_account_name: <%= ENV['AZURE_STORAGE_ACCOUNT'] %>
+  storage_access_key: <%= ENV['AZURE_STORAGE_ACCESS_KEY'] %>
+  container: <%= ENV['AZURE_CONTAINER'] %>
+
+# -----------------------
+# Additional options
+# -----------------------
+# - Default public URL can be customized per service
+# - Use variants and transformations with ActiveStorage
+# - Supports multiple services per environment
