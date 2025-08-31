@@ -1,61 +1,83 @@
-# config/boot.rb
-
 # frozen_string_literal: true
 
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
+# =============================================================================
+# PixelCanvas Boot Script
+# Purpose: Robust bootloader for Rails 8 apps on multiple platforms
+# Author: Generated for Heroku deployment
+# =============================================================================
 
-require 'bundler/setup' # Set up gems listed in the Gemfile.
-require 'bootsnap/setup' # Speed up boot time by caching expensive operations.
+require "fileutils"
+require "rbconfig"
+require "bundler"
 
-# Load environment variables from .env files if using dotenv-rails
-if defined?(Dotenv)
-  Dotenv.load('.env', ".env.#{ENV['RAILS_ENV']}")
-end
+# -----------------------------
+# Set Gemfile environment
+# -----------------------------
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../Gemfile", __dir__)
 
-# Check Ruby version
-required_ruby_version = Gem::Requirement.new('>= 3.2.0')
-unless required_ruby_version.satisfied_by?(Gem::Version.new(RUBY_VERSION))
-  abort("Ruby #{RUBY_VERSION} is not supported. Requires #{required_ruby_version}.")
-end
-
-# Check Bundler version
-required_bundler_version = Gem::Requirement.new('>= 2.4.0')
-unless required_bundler_version.satisfied_by?(Gem::Version.new(Bundler::VERSION))
-  abort("Bundler #{Bundler::VERSION} is not supported. Requires #{required_bundler_version}.")
-end
-
-# Custom boot hooks (extendable)
+# -----------------------------
+# Helper module for boot tasks
+# -----------------------------
 module PixelCanvas
   class Boot
     class << self
-      def run
-        load_env_files
-        setup_bundler
-        setup_load_paths
-        verify_system
+      # Detect platform and adjust Bundler lockfile if needed
+      def ensure_platform_compatibility
+        return unless Bundler.default_lockfile.exist?
+
+        Bundler.locked_gems.specs.each do |spec|
+          if spec.platform.to_s == "x64-mingw-ucrt" && RUBY_PLATFORM =~ /linux/
+            puts "[Boot] Adding Linux platform for #{spec.name}"
+            Bundler.lock.add_platform("x86_64-linux")
+          end
+        end
+      rescue StandardError => e
+        warn "[Boot] Platform adjustment skipped: #{e.message}"
       end
 
-      private
-
-      def load_env_files
-        return unless defined?(Dotenv)
-        Dotenv.load('.env', ".env.#{ENV['RAILS_ENV']}")
-      end
-
+      # Initialize Bundler and require gems
       def setup_bundler
-        require 'bundler/setup'
+        Bundler.setup(:default, ENV["RAILS_ENV"] || "development")
+        Bundler.require(*Bundler.groups)
+      rescue Bundler::BundlerError => e
+        warn "[Boot] Bundler setup failed: #{e.message}"
+        exit 1
       end
 
-      def setup_load_paths
-        $LOAD_PATH.unshift(File.expand_path('../lib', __dir__)) unless $LOAD_PATH.include?(File.expand_path('../lib', __dir__))
+      # Load Rails safely
+      def load_rails
+        require "rails"
+        require "rails/all"
+      rescue LoadError => e
+        warn "[Boot] Rails not loaded: #{e.message}"
+        exit 1
       end
 
-      def verify_system
-        puts "Booting PixelCanvas Rails #{Rails.version} with Ruby #{RUBY_VERSION} and Bundler #{Bundler::VERSION}"
+      # Logging utility
+      def log_boot
+        ruby_ver = RUBY_VERSION
+        bundler_ver = Bundler::VERSION
+        platform   = RUBY_PLATFORM
+        puts "[Boot] PixelCanvas booting on Ruby #{ruby_ver} with Bundler #{bundler_ver} (#{platform})"
+      end
+
+      # Run the boot process
+      def run
+        ensure_platform_compatibility
+        setup_bundler
+        log_boot
+        load_rails
       end
     end
   end
 end
 
-# Run boot process
+# -----------------------------
+# Execute boot
+# -----------------------------
 PixelCanvas::Boot.run
+
+# -----------------------------
+# Add app lib folder to load path
+# -----------------------------
+$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
