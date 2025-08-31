@@ -1,7 +1,7 @@
 run = "bundle exec ruby main.rb"
 hidden = [".bundle"]
 entrypoint = "main.rb"
-modules = ["ruby-3.2"]
+modules = ["ruby-3.1"]
 
 [nix]
 channel = "stable-24_05"
@@ -9,3 +9,19 @@ packages = ["zammad", "tree", "rbenv"]
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix"]
+
+[workflows]
+runButton = "Run Rails App"
+
+[[workflows.workflow]]
+name = "Run Rails App"
+author = 46712357
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bundle install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bundle exec rails server --binding=0.0.0.0 --port=5000"
