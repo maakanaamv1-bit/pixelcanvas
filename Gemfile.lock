@@ -89,7 +89,7 @@ GEM
     websocket-extensions (0.1.5)
 
 PLATFORMS
-  ruby
+  ruby "3.3.0"
 
 DEPENDENCIES
   actioncable (= 7.1.0)
